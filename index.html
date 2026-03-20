@@ -314,7 +314,25 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+  _subject: `EHS Field Report - ${payload.reportType}`,
+  message: `
+EHS FIELD REPORT
+
+Name: ${payload.workerName}
+Date: ${payload.reportDate}
+Time: ${payload.reportTime}
+Type: ${payload.reportType}
+
+DETAILS:
+${payload.details}
+
+IMMEDIATE ACTIONS:
+${payload.immediateActions || 'None provided'}
+
+Submitted: ${payload.submittedAt}
+  `
+})
       });
     }
 
