@@ -6,57 +6,117 @@
 <title>EHS Field Report</title>
 
 <style>
+:root {
+  --bg: #0b1220;
+  --card: #0f172a;
+  --line: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #22c55e;
+}
+
 body {
-  margin:0;
+  margin: 0;
   font-family: Arial, sans-serif;
-  background:#f4f7fb;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .wrap {
-  max-width:760px;
-  margin:30px auto;
-  padding:20px;
-  background:white;
-  border-radius:16px;
+  max-width: 760px;
+  margin: 30px auto;
 }
 
-h1 { margin:0 0 6px; }
-
-.sub { color:#666; margin-bottom:20px; }
-
-input, select, textarea {
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin-top:6px;
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid var(--line);
 }
 
-textarea { min-height:120px; }
+h1 {
+  margin-bottom: 6px;
+}
+
+.sub {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
 
 .grid {
-  display:grid;
-  gap:12px;
+  display: grid;
+  gap: 12px;
 }
 
 .g2 {
-  grid-template-columns:1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 680px) {
+  .g2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* 🔥 ALL INPUTS SAME SIZE */
+input,
+select {
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #020617;
+  color: white;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+/* 🔥 ONLY TEXT AREAS BIGGER */
+textarea {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #020617;
+  color: white;
+  padding: 12px 14px;
+  font-size: 14px;
+  min-height: 140px;
+}
+
+textarea.small {
+  min-height: 100px;
+}
+
+.actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
 }
 
 button {
-  padding:12px 16px;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .primary {
-  background:#1f6feb;
-  color:white;
+  background: var(--accent);
+  color: black;
 }
 
 .secondary {
-  background:#eee;
+  background: #1e293b;
+  color: white;
 }
 </style>
 </head>
@@ -64,6 +124,7 @@ button {
 <body>
 
 <div class="wrap">
+<div class="card">
 
 <h1>Real-Time EHS Field Report</h1>
 <p class="sub">Boots-on-ground awareness. Real accountability.</p>
@@ -71,27 +132,27 @@ button {
 <form id="reportForm">
 
 <div class="grid g2">
-  <div>
+  <div class="field">
     <label>Name *</label>
-    <input id="workerName" required>
+    <input id="name" required>
   </div>
 
-  <div>
+  <div class="field">
     <label>Date *</label>
-    <select id="reportDate" required></select>
+    <select id="date"></select>
   </div>
 </div>
 
 <div class="grid g2">
-  <div>
+  <div class="field">
     <label>Time *</label>
-    <input id="reportTime" type="time" required>
+    <input id="time" type="time">
   </div>
 
-  <div>
+  <div class="field">
     <label>Type *</label>
-    <select id="reportType" required>
-      <option value="">Select one</option>
+    <select id="type">
+      <option>Select one</option>
       <option>Injury / Illness</option>
       <option>Vehicle Incident</option>
       <option>Property Damage</option>
@@ -104,24 +165,50 @@ button {
   </div>
 </div>
 
-<label>Details *</label>
-<textarea id="details" required></textarea>
+<div class="field">
+  <label>Location (Site / Area)</label>
+  <input placeholder="e.g., Mosaic Belle Plaine — Mill A">
+</div>
 
-<label>Immediate Actions</label>
-<textarea id="immediateActions"></textarea>
+<div class="field">
+  <label>Supervisor (HSE)</label>
+  <input placeholder="Full name">
+</div>
 
-<br>
+<div class="grid g2">
+  <div class="field">
+    <label>Craft *</label>
+    <input placeholder="Pipefitter / Electrician">
+  </div>
 
-<button class="primary" type="submit">Submit</button>
-<button class="secondary" type="button" id="clearBtn">Clear</button>
+  <div class="field">
+    <label>Facility *</label>
+    <input placeholder="e.g., Regina General ER">
+  </div>
+</div>
+
+<div class="field">
+  <label>Details *</label>
+  <textarea></textarea>
+</div>
+
+<div class="field">
+  <label>Immediate Actions</label>
+  <textarea class="small"></textarea>
+</div>
+
+<div class="actions">
+  <button class="primary" type="submit">Save</button>
+  <button class="secondary" type="button" onclick="location.reload()">Clear</button>
+</div>
 
 </form>
+
+</div>
 </div>
 
 <script>
-
-const form = document.getElementById('reportForm');
-const dateSelect = document.getElementById('reportDate');
+const dateSelect = document.getElementById("date");
 
 function populateDates() {
   const today = new Date();
@@ -131,9 +218,9 @@ function populateDates() {
     const d = new Date();
     d.setDate(today.getDate() + i);
 
-    const iso = d.toISOString().split('T')[0];
+    const iso = d.toISOString().split("T")[0];
 
-    const opt = document.createElement('option');
+    const opt = document.createElement("option");
     opt.value = iso;
     opt.textContent = iso;
 
@@ -145,27 +232,12 @@ function populateDates() {
 
 function setTime() {
   const now = new Date();
-  document.getElementById('reportTime').value =
+  document.getElementById("time").value =
     now.toTimeString().slice(0,5);
 }
 
-function clearForm() {
-  form.reset();
-  populateDates();
-  setTime();
-}
-
-form.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  alert("Form working properly again");
-  clearForm();
-});
-
-document.getElementById('clearBtn').onclick = clearForm;
-
 populateDates();
 setTime();
-
 </script>
 
 </body>
