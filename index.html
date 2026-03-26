@@ -396,7 +396,7 @@ Submitted (SK): ${payload.reportDate} at ${payload.reportTime}
 
     populateDates();
     setCurrentTime();
-  <script type="module">
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -416,6 +416,6 @@ const firebaseConfig = {
   window.addDoc = addDoc;
   window.collection = collection;
   window.serverTimestamp = serverTimestamp;
-</script>
+
   </body>
 </html>
