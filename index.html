@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EHS Field Report</title>
+<title>Field Observation Report</title>
 
 <style>
 :root {
-  --bg: #0b1220;
-  --card: #0f172a;
-  --line: #1e293b;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
+  --bg: #071225;
+  --card: #0c1830;
+  --line: #22314f;
+  --text: #f3f6fb;
+  --muted: #a8b4c7;
   --accent: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -23,39 +27,32 @@ body {
 }
 
 .wrap {
-  max-width: 760px;
-  margin: 30px auto;
+  max-width: 1180px;
+  margin: 12px auto;
+  padding: 0 14px;
 }
 
 .card {
   background: var(--card);
-  border-radius: 18px;
-  padding: 20px;
   border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px 28px 24px;
 }
 
 h1 {
-  margin-bottom: 6px;
-}
-
-.sub {
-  color: var(--muted);
-  margin-bottom: 20px;
+  margin: 0 0 26px;
+  font-size: 2.2rem;
+  line-height: 1.1;
+  font-weight: 800;
 }
 
 .grid {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .g2 {
-  grid-template-columns: 1fr 1fr;
-}
-
-@media (max-width: 680px) {
-  .g2 {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .field {
@@ -64,59 +61,93 @@ h1 {
 }
 
 label {
-  margin-bottom: 6px;
-  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
-/* 🔥 ALL INPUTS SAME SIZE */
 input,
 select {
-  height: 52px;
-  border-radius: 12px;
+  width: 100%;
+  height: 58px;
+  border-radius: 18px;
   border: 1px solid var(--line);
-  background: #020617;
-  color: white;
-  padding: 0 14px;
-  font-size: 14px;
+  background: #020817;
+  color: var(--text);
+  padding: 0 20px;
+  font-size: 1rem;
+  outline: none;
 }
 
-/* 🔥 ONLY TEXT AREAS BIGGER */
 textarea {
-  border-radius: 12px;
+  width: 100%;
+  border-radius: 18px;
   border: 1px solid var(--line);
-  background: #020617;
-  color: white;
-  padding: 12px 14px;
-  font-size: 14px;
-  min-height: 140px;
+  background: #020817;
+  color: var(--text);
+  padding: 16px 20px;
+  font-size: 1rem;
+  outline: none;
+  min-height: 150px;
+  resize: vertical;
 }
 
 textarea.small {
-  min-height: 100px;
+  min-height: 110px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7f8da6;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #d9dee8;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
 }
 
 .actions {
-  margin-top: 15px;
+  margin-top: 18px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  align-items: center;
 }
 
 button {
-  padding: 12px 18px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
+  padding: 14px 22px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .primary {
   background: var(--accent);
-  color: black;
+  color: #04110a;
+  border: none;
 }
 
 .secondary {
-  background: #1e293b;
-  color: white;
+  background: #0b1529;
+  color: var(--text);
+}
+
+@media (max-width: 780px) {
+  .g2 {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 22px 18px 20px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
 }
 </style>
 </head>
@@ -124,91 +155,97 @@ button {
 <body>
 
 <div class="wrap">
-<div class="card">
+  <div class="card">
+    <h1>Field Observation Report</h1>
 
-<h1>Real-Time EHS Field Report</h1>
-<p class="sub">Boots-on-ground awareness. Real accountability.</p>
+    <form id="reportForm">
 
-<form id="reportForm">
+      <div class="grid g2">
+        <div class="field">
+          <label for="name">Name *</label>
+          <input id="name" name="name" type="text" required>
+        </div>
 
-<div class="grid g2">
-  <div class="field">
-    <label>Name *</label>
-    <input id="name" required>
+        <div class="field">
+          <label for="date">Date *</label>
+          <select id="date" name="date" required></select>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="field">
+          <label for="time">Time *</label>
+          <input id="time" name="time" type="time" required>
+        </div>
+
+        <div class="field">
+          <label for="observationType">Observation Type *</label>
+          <select id="observationType" name="observationType" required>
+            <option value="">Select one</option>
+            <option>Injury / Illness</option>
+            <option>Vehicle Incident</option>
+            <option>Property Damage</option>
+            <option>Near Miss</option>
+            <option>Hazardous Condition</option>
+            <option>Environmental</option>
+            <option>Stop Control</option>
+            <option>Safety Recognition</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="location">Location (Specify Area) *</label>
+        <input id="location" name="location" type="text" required>
+      </div>
+
+      <div class="grid g2">
+        <div class="field">
+          <label for="craft">Craft *</label>
+          <select id="craft" name="craft" required>
+            <option value="">Select one</option>
+            <option>Boilermaker</option>
+            <option>Carpenter</option>
+            <option>Electrical</option>
+            <option>Instrumentation</option>
+            <option>Labourer</option>
+            <option>Millwright</option>
+            <option>Operator</option>
+            <option>Painter</option>
+            <option>Pipefitter</option>
+            <option>Scaffolder</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="foreperson">Foreperson/Coordinator *</label>
+          <input id="foreperson" name="foreperson" type="text" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="details">Details *</label>
+        <textarea id="details" name="details" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="immediateActions">Immediate Actions</label>
+        <textarea id="immediateActions" name="immediateActions" class="small"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit">Save</button>
+        <button class="secondary" type="button" id="clearBtn">Clear</button>
+      </div>
+
+    </form>
   </div>
-
-  <div class="field">
-    <label>Date *</label>
-    <select id="date"></select>
-  </div>
-</div>
-
-<div class="grid g2">
-  <div class="field">
-    <label>Time *</label>
-    <input id="time" type="time">
-  </div>
-
-  <div class="field">
-    <label>Type *</label>
-    <select id="type">
-      <option>Select one</option>
-      <option>Injury / Illness</option>
-      <option>Vehicle Incident</option>
-      <option>Property Damage</option>
-      <option>Near Miss</option>
-      <option>Hazardous Condition</option>
-      <option>Environmental</option>
-      <option>Stop Control</option>
-      <option>Safety Recognition</option>
-    </select>
-  </div>
-</div>
-
-<div class="field">
-  <label>Location (Site / Area)</label>
-  <input placeholder="e.g., Mosaic Belle Plaine — Mill A">
-</div>
-
-<div class="field">
-  <label>Supervisor (HSE)</label>
-  <input placeholder="Full name">
-</div>
-
-<div class="grid g2">
-  <div class="field">
-    <label>Craft *</label>
-    <input placeholder="Pipefitter / Electrician">
-  </div>
-
-  <div class="field">
-    <label>Facility *</label>
-    <input placeholder="e.g., Regina General ER">
-  </div>
-</div>
-
-<div class="field">
-  <label>Details *</label>
-  <textarea></textarea>
-</div>
-
-<div class="field">
-  <label>Immediate Actions</label>
-  <textarea class="small"></textarea>
-</div>
-
-<div class="actions">
-  <button class="primary" type="submit">Save</button>
-  <button class="secondary" type="button" onclick="location.reload()">Clear</button>
-</div>
-
-</form>
-
-</div>
 </div>
 
 <script>
+const form = document.getElementById("reportForm");
 const dateSelect = document.getElementById("date");
+const clearBtn = document.getElementById("clearBtn");
 
 function populateDates() {
   const today = new Date();
@@ -220,24 +257,38 @@ function populateDates() {
 
     const iso = d.toISOString().split("T")[0];
 
-    const opt = document.createElement("option");
-    opt.value = iso;
-    opt.textContent = iso;
+    const option = document.createElement("option");
+    option.value = iso;
+    option.textContent = iso;
 
-    if (i === 0) opt.selected = true;
+    if (i === 0) {
+      option.selected = true;
+    }
 
-    dateSelect.appendChild(opt);
+    dateSelect.appendChild(option);
   }
 }
 
-function setTime() {
+function setCurrentTime() {
   const now = new Date();
-  document.getElementById("time").value =
-    now.toTimeString().slice(0,5);
+  document.getElementById("time").value = now.toTimeString().slice(0, 5);
 }
 
+function clearForm() {
+  form.reset();
+  populateDates();
+  setCurrentTime();
+}
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Form saved layout is working.");
+});
+
+clearBtn.addEventListener("click", clearForm);
+
 populateDates();
-setTime();
+setCurrentTime();
 </script>
 
 </body>
