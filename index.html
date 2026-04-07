@@ -6,6 +6,7 @@
 <title>Field Observation Report</title>
 <link rel="apple-touch-icon" href="/clean_icon_ios.png">
 <link rel="icon" href="/clean_icon_ios.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
 :root {
   --bg: #071225;
@@ -110,6 +111,51 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
 }
 
+.date-field {
+  position: relative;
+}
+
+.date-field input {
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.date-arrow {
+  position: absolute;
+  right: 18px;
+  top: 51px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.flatpickr-calendar {
+  background: #0c1830;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year,
+.flatpickr-weekday,
+.flatpickr-day {
+  color: var(--text);
+}
+
+.flatpickr-day.today {
+  border-color: var(--accent);
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #04110a;
+}
+
 .actions {
   margin-top: 18px;
   display: flex;
@@ -184,9 +230,10 @@ button {
           <input id="name" name="Name" type="text" required>
         </div>
 
-        <div class="field">
+        <div class="field date-field">
           <label for="date">Date *</label>
-          <input id="date" name="Date" type="date" required>
+          <input id="date" name="Date" type="text" required readonly>
+          <span class="date-arrow">▼</span>
         </div>
       </div>
 
@@ -261,20 +308,19 @@ button {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 const form = document.getElementById("reportForm");
 const clearBtn = document.getElementById("clearBtn");
 const statusEl = document.getElementById("status");
-const dateInput = document.getElementById("date");
 const timeInput = document.getElementById("time");
 
-function setCurrentDate() {
-  const today = new Date();
-  const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
-    .toISOString()
-    .split("T")[0];
-  dateInput.value = localDate;
-}
+const datePicker = flatpickr("#date", {
+  dateFormat: "Y-m-d",
+  defaultDate: new Date(),
+  allowInput: false,
+  clickOpens: true
+});
 
 function setCurrentTime() {
   const now = new Date();
@@ -283,7 +329,7 @@ function setCurrentTime() {
 
 function clearForm() {
   form.reset();
-  setCurrentDate();
+  datePicker.setDate(new Date(), true);
   setCurrentTime();
   statusEl.textContent = "";
   statusEl.className = "status";
@@ -322,7 +368,6 @@ form.addEventListener("submit", async function(e) {
 
 clearBtn.addEventListener("click", clearForm);
 
-setCurrentDate();
 setCurrentTime();
 </script>
 
