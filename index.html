@@ -186,7 +186,7 @@ button {
 
         <div class="field">
           <label for="date">Date *</label>
-          <select id="date" name="Date" required></select>
+          <input id="date" name="Date" type="date" required>
         </div>
       </div>
 
@@ -263,40 +263,27 @@ button {
 
 <script>
 const form = document.getElementById("reportForm");
-const dateSelect = document.getElementById("date");
 const clearBtn = document.getElementById("clearBtn");
 const statusEl = document.getElementById("status");
+const dateInput = document.getElementById("date");
+const timeInput = document.getElementById("time");
 
-function populateDates() {
+function setCurrentDate() {
   const today = new Date();
-  dateSelect.innerHTML = "";
-
-  for (let i = -7; i <= 30; i++) {
-    const d = new Date();
-    d.setDate(today.getDate() + i);
-
-    const iso = d.toISOString().split("T")[0];
-
-    const option = document.createElement("option");
-    option.value = iso;
-    option.textContent = iso;
-
-    if (i === 0) {
-      option.selected = true;
-    }
-
-    dateSelect.appendChild(option);
-  }
+  const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
+  dateInput.value = localDate;
 }
 
 function setCurrentTime() {
   const now = new Date();
-  document.getElementById("time").value = now.toTimeString().slice(0, 5);
+  timeInput.value = now.toTimeString().slice(0, 5);
 }
 
 function clearForm() {
   form.reset();
-  populateDates();
+  setCurrentDate();
   setCurrentTime();
   statusEl.textContent = "";
   statusEl.className = "status";
@@ -335,7 +322,7 @@ form.addEventListener("submit", async function(e) {
 
 clearBtn.addEventListener("click", clearForm);
 
-populateDates();
+setCurrentDate();
 setCurrentTime();
 </script>
 
