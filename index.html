@@ -220,7 +220,7 @@ button {
   <div class="card">
     <h1>Field Observation Report</h1>
 
-    <form id="reportForm" action="https://formspree.io/f/mnjoqogq" method="POST">
+    <form id="reportForm" action="https://formspree.io/f/mnjoqogq" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="_subject" value="New Field Observation Report">
       <input type="hidden" name="_captcha" value="false">
 
@@ -291,6 +291,11 @@ button {
       <div class="field">
         <label for="details">Details *</label>
         <textarea id="details" name="Details" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="photo">Photo</label>
+        <input id="photo" name="Photo" type="file" accept="image/*">
       </div>
 
       <div class="field">
